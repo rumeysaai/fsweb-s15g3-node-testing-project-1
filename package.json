@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "test": "cross-env NODE_ENV=testing jest --verbose"
+    "test": "cross-env NODE_ENV=testing jest --verbose --watch"
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",

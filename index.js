@@ -8,6 +8,11 @@
  */
 function nesneyiTrimle(obj) {
   // ✨ kodlar buraya
+  const newObj = {};
+  for (let item in obj) {
+    newObj[item] = obj[item].trim();
+  }
+  return newObj;
 }
 
 /**
@@ -20,6 +25,16 @@ function nesneyiTrimle(obj) {
  */
 function verileniTrimle(obj, prop) {
   // ✨ kodlar buraya
+  const newObj = {};
+  for (let item in obj) {
+    if (item === prop) {
+      newObj[item] = obj[item].trim();
+    }
+    else {
+      newObj[item] = obj[item];
+    }
+  }
+  return newObj;
 }
 
 /**
@@ -32,6 +47,14 @@ function verileniTrimle(obj, prop) {
  */
 function enBuyukTamsayiyiBul(tamsayilar) {
   // ✨ kodlar buraya
+  let maxNumb = tamsayilar[0].tamsayi;
+  for (let i = 0; i < tamsayilar.length; i++) {
+    const numb = tamsayilar[i].tamsayi;
+    if (numb > maxNumb) {
+      maxNumb = numb;
+    }
+  }
+  return maxNumb;
 }
 
 function Sayici(ilkSayi) {
@@ -39,9 +62,10 @@ function Sayici(ilkSayi) {
    * [Görev 4A] Sayici bir sayaç oluşturur
    * @param {number} ilkSayi - Sayacin ilk değeri
    */
-  
+  this.ilkSayi = ilkSayi;
+
   // ✨ gerekli propları ekleyin
-  
+
 
   /**
    * [Görev 4B] asagiSay metodu sıfıra doğru sayar
@@ -57,6 +81,12 @@ function Sayici(ilkSayi) {
    */
   this.asagiSay = () => {
     // ✨ kodlar buraya
+    if (this.ilkSayi >= 1) {
+      return this.ilkSayi--;
+    }
+    else {
+      return 0;
+    }
   }
 }
 
@@ -64,7 +94,7 @@ function Mevsimler() {
   /**
    * [Görev 5A] Mevsimler , bir mevsimler nesnesi oluşturur
    */
-
+  this.mevsimler = ["ilkbahar", "yaz", "sonbahar", "kış"];
   // ✨ gerekli propları ekleyin
 
   /**
@@ -79,24 +109,28 @@ function Mevsimler() {
    * mevsimler.sonraki() // "ilkbahar" döndürür
    * mevsimler.sonraki() // "yaz" döndürür
    */
+  let index = 0;
   this.sonraki = () => {
     // ✨ kodlar buraya
+    index = (index + 1) % this.mevsimler.length;
+    return this.mevsimler[index];
   }
 }
 
-function Araba(/*kodlar buraya */) {
+function Araba(isim, depoBenzin, kml) {
   /**
    * [Görev 6A] Araba 3 argüman alarak bir araba nesnesi oluşturur
    * @param {string} isim - arabanın ismi
    * @param {number} depo - benzin deposu kapasitesi
    * @param {number} kml - arabanın litre başına kat edebileceği km yol
    */
- 
-    this.odometer = 0 // araba 0 kilometrede yüklenecek
-    this.depo = depoBenzin // araba full depoyla yüklenecek
-    // ✨ gerekli propları ekleyin
+  this.isim = isim;
+  this.kml = kml;
+  this.odometer = 0 // araba 0 kilometrede yüklenecek
+  this.depo = depoBenzin // araba full depoyla yüklenecek
+  this.maxDepo = depoBenzin;
+  // ✨ gerekli propları ekleyin
 
-  
 
   /**
    * [Görev 6B] sur metodu odometera km ekler ve aynı oranda depodan benzin tüketir
@@ -113,6 +147,16 @@ function Araba(/*kodlar buraya */) {
    */
   this.sur = (gidilecekyol) => {
     // ✨ kodlar buraya
+    let maxGidilecekMesafe = this.depo * this.kml;
+
+    if (gidilecekyol <= maxGidilecekMesafe) {
+      this.odometer = this.odometer + gidilecekyol
+      this.depo = this.depo - (gidilecekyol / this.kml);
+      return this.odometer;
+    }
+    this.depo = 0;
+    this.odometer += maxGidilecekMesafe;
+    return this.odometer;
   }
 
   /**
@@ -128,8 +172,27 @@ function Araba(/*kodlar buraya */) {
    */
   this.benzinal = (litre) => {
     // ✨ kodlar buraya
+    const kalanDepo = this.maxDepo - this.depo;
+    let gidilecekKm;
+
+    if (litre <= kalanDepo) {
+      this.depo = this.depo + litre;
+      gidilecekKm = this.depo * kml;
+      return gidilecekKm;
+    }
+    this.depo = this.maxDepo;
+    gidilecekKm = this.depo * kml;
+    return gidilecekKm;
   }
+
 }
+const focus = new Araba("focus", 20, 30);
+console.log(focus.sur(100));
+console.log(focus.sur(100));
+console.log(focus.sur(100));
+console.log(focus.sur(100));
+console.log(focus.sur(100));
+console.log(focus.sur(100));
 
 /**
  * [Görev 7] Bir sayının çift olup olmadığını asenkron olarak çözümler
@@ -144,9 +207,23 @@ function Araba(/*kodlar buraya */) {
  *    // sonuç false
  * })
  */
-function asenkronCiftSayi(sayi) {
+async function asenkronCiftSayi(sayi) {
   // ✨ implement
+
+  this.sayi = sayi;
+  // return new Promise(res=>{
+  //   res(sayi % 2 == 0);
+  // })
+
+  if (sayi % 2 === 0) {
+    return true;
+  } else {
+    return false;
+  }
+
 }
+console.log(asenkronCiftSayi(3));
+
 
 module.exports = {
   nesneyiTrimle,
